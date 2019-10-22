@@ -21,6 +21,10 @@ if command -v buildah >/dev/null 2>&1; then
 
 elif command -v docker >/dev/null 2>&1; then
   cd ood-server
+  export PRIMARY_GID=$(id -g)
+  export UID
+  envsubst < Dockerfile.template > Dockerfile
+  
   docker build -t "$IMG" .
 
 else

@@ -1,0 +1,13 @@
+
+FROM ohiosupercomputer/ood:latest
+
+RUN userdel ood
+RUN groupdel ood || true
+
+RUN groupadd -g $PRIMARY_GID $USER
+RUN useradd -u $UID --create-home --gid $USER $USER
+RUN usermod -a -G wheel $USER
+RUN passwd --delete $USER
+RUN passwd --delete root
+RUN scl enable httpd24 -- htpasswd -b -c /opt/rh/httpd24/root/etc/httpd/.htpasswd $USER $USER
+
