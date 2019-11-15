@@ -1,20 +1,34 @@
 #!/bin/bash
 
-ctr=$(buildah from ohiosupercomputer/ood:latest) 
+if [ "$1" == "debian" ]; then
 
+ BASE_IMG="ood:debian"
+ HTTPD_DB="/etc/apache2/.htpasswd"
+ IMG="ood:debian"
+ SUDO_GRP="sudo"
+ HTPASSWD="/usr/bin/htpasswd"
+else
+  BASE_IMG="ohiosupercomputer/ood:latest"
+  HTTPD_DB="/opt/rh/httpd24/root/etc/httpd/.htpasswd"
+  IMG="ood:dev"
+  SUDO_GRP="wheel"
+  HTPASSWD="scl enable httpd24 -- htpasswd"
+fi
 
-HTTPD_DB="/opt/rh/httpd24/root/etc/httpd/.htpasswd"
+ctr=$(buildah from $BASE_IMG)
 
-IMG="ood:dev"
-
+# create a user inside the container, replacing ood and doing so with my (whoever $USER is)
+# uid and gid.  Then deleting the passwords for continence.
 if command -v buildah >/dev/null 2>&1; then
-  buildah run $ctr -- userdel ood
-  buildah run $ctr -- groupadd $USER
-  buildah run $ctr -- useradd -u $(id -u) --create-home --gid $USER $USER
-  buildah run $ctr -- usermod -a -G wheel $USER
-  buildah run $ctr -- passwd --delete $USER
-  buildah run $ctr -- passwd --delete root
-  buildah run $ctr -- scl enable httpd24 -- htpasswd -b -c $HTTPD_DB $USER $USER
+  buildah run $ctr -- bash -c "userdel ood || true"
+  buildah run $ctr -- bash -c "groupdel ood || true"
+  buildah run $ctr -- bash -c "groupadd $USER || true"
+  buildah run $ctr -- bash -c "useradd -u $(id -u) --create-home --gid $USER $USER || true"
+  buildah run $ctr -- bash -c "usermod -a -G $SUDO_GRP $USER"
+  buildah run $ctr -- bash -c "passwd --delete $USER"
+  buildah run $ctr -- bash -c "passwd --delete root"
+  buildah run $ctr -- bash -c "echo '$USER ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers.d/$USER"
+  buildah run $ctr -- bash -c "$HTPASSWD -b -c $HTTPD_DB $USER $USER"
 
   buildah commit $ctr "$IMG"
   buildah rm $ctr
