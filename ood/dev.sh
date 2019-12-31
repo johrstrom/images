@@ -23,5 +23,5 @@ buildah run $ctr -- touch /opt/ood/ondemand/enable
 buildah run $ctr -- mkdir -p /etc/scl/conf/
 buildah run $ctr bash -c 'echo "/opt/ood" > /etc/scl/conf/ondemand'
 
-buildah commit $ctr ood-dev:latest
+buildah commit $ctr ood:dev
 buildah rm $ctr
