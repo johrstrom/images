@@ -1,7 +1,7 @@
 #!/bin/sh
 
 BASE_IMG="openjdk:8"
-JMETER_TAR="apache-jmeter-5.1.1.tgz"
+JMETER_TAR="apache-jmeter-5.2.1.tgz"
 JMETER_DIR="/jmeter"
 BIN_DIR="/jmeter/bin"
 

@@ -3,6 +3,7 @@
 # Build a golang container with some extra header libraries
 
 packages="libgpgme-dev libseccomp-dev libassuan-dev libgpg-error-dev"
+packages="$packages libstdc++-8-dev libbtrfs-dev"
 
 # golang:bullseye doesn't exist yet, cp golang:buster Dockerfile and
 # user a different 'from'
