@@ -1,36 +1,15 @@
 #!/bin/sh
 #
-# Make an image that you can test ansible playbooks against
+# Make an image that you can run ansible with
 #
 
-if [ -z "$1" ]; then
-  echo "you must specify \$1"
-  exit 1
-fi
+ctr=$(buildah from python:3)
 
-OS=$1
+buildah run $ctr -- bash -c "groupadd $USER || true"
+buildah run $ctr -- bash -c "useradd -u $(id -u) --create-home --gid $USER $USER"
+#buildah run $ctr -- bash -c "usermod -a -G $SUDO_GRP $USER"
+buildah run $ctr -- bash -c "passwd --delete $USER"
+buildah run $ctr -- bash -c "passwd --delete root"
 
-if [ "$OS" = "ubuntu" ]; then
-  IMG="ubuntu:18.04"
-  PKGS="sudo python"
-  INSTALL_CMD="apt-get update && apt-get install -y ${PKGS}"
-elif [ "$OS" = "fedora" ]; then
- IMG="fedora:30"
- PKGS="sudo python"
- INSTALL_CMD="dnf install -y ${PKGS}"
-elif [ "$OS" = "debian" ]; then
-  IMG="debian:buster"
-  PKGS="sudo python"
-  INSTALL_CMD="apt-get update && apt-get install -y ${PKGS}"
-else
-  echo "$OS not recognized as an os"
-  exit 1
-fi
-
-ctr=$(buildah from "$IMG")
-
-# shellcheck disable=SC2086
-buildah run "$ctr" bash -c "${INSTALL_CMD}"
-
-buildah commit "$ctr" "ansible-test:$OS"
+buildah commit "$ctr" "ansible:user"
 buildah rm "$ctr"
