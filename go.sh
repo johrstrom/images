@@ -3,11 +3,9 @@
 # Build a golang container with some extra header libraries
 
 packages="libgpgme-dev libseccomp-dev libassuan-dev libgpg-error-dev"
-packages="$packages libstdc++-8-dev libbtrfs-dev"
+packages="$packages libstdc++-8-dev libbtrfs-dev libdevmapper-dev"
 
-# golang:bullseye doesn't exist yet, cp golang:buster Dockerfile and
-# user a different 'from'
-ctr=$(buildah from golang:bullseye)
+ctr=$(buildah from golang:1.13-buster)
 
 buildah run $ctr apt-get update
 buildah run $ctr apt-get -y install ${packages}
