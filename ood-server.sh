@@ -1,10 +1,10 @@
 #!/bin/bash
 
-if [ "$1" == "debian" ]; then
+if [[ "$1" == "debian" ]] || [[ "$1" == "ubuntu" ]]; then
 
- BASE_IMG="ood:debian"
+ BASE_IMG="ood:$1"
  HTTPD_DB="/etc/apache2/.htpasswd"
- IMG="ood:debian"
+ IMG="ood:$1"
  SUDO_GRP="sudo"
  HTPASSWD="/usr/bin/htpasswd"
 else
