@@ -1,7 +1,8 @@
 #!/bin/sh
 
 IMG="buildpack-deps:bullseye"
-extra_packages=('libdevmapper-dev')
+extra_packages=('libdevmapper-dev' 'libcap-dev' 'libseccomp-dev' 'ccache' 'autopoint')
+extra_packages+=('yelp-tools' 'python-gi-dev' 'libatspi2.0-dev' 'libatk-bridge2.0')
 
 ctr=$(buildah from "$IMG")
 
