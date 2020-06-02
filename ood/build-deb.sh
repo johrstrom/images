@@ -30,5 +30,5 @@ buildah run $ctr -- usermod -a -G sudo $USER
 buildah run $ctr -- passwd --delete $USER
 buildah run $ctr -- passwd --delete root
 
-buildah commit $ctr ood:build-deb
+buildah commit $ctr ood-build:debian
 buildah rm $ctr

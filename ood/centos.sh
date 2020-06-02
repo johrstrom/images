@@ -27,5 +27,5 @@ buildah run $ctr bash -c 'echo "/opt/ood" > /etc/scl/conf/ondemand'
 #
 buildah run $ctr -- ln -s /usr/lib64/libdevmapper.so.1.02 /usr/lib64/libdevmapper.so.1.02.1
 
-buildah commit $ctr ood:dev
+buildah commit $ctr ood-build:centos7
 buildah rm $ctr

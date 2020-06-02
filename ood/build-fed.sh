@@ -33,5 +33,5 @@ buildah run $ctr -- rm -rf /var/cache/dnf
 buildah run $ctr -- ln -s '/usr/lib64/libdevmapper.so.1.02' '/usr/lib64/libdevmapper.so.1.02.1'
 buildah run $ctr -- sed -i -e 's|^#mount_program|mount_program|g' /etc/containers/storage.conf
 
-buildah commit $ctr ood:build-fedora
+buildah commit $ctr ood-build:fedora
 buildah rm $ctr
