@@ -2,8 +2,9 @@
 
 ctr=$(buildah from centos:7) 
 
-dev_packages=(lsof sudo sqlite-devel gcc rh-ruby25-ruby-devel zlib-devel git curl make wget)
-dev_packages+=(rh-nodejs10 rh-ruby25 rpm-build gcc-c++ libseccomp vim-enhanced)
+dev_packages=(lsof sudo sqlite-devel gcc rh-ruby25-ruby-devel zlib-devel git make wget)
+dev_packages+=(rh-nodejs10 rh-ruby25 rpm-build gcc-c++ libseccomp vim-enhanced openssl-devel)
+dev_packages+=(curl curl-devel selinux-policy-devel strace)
 
 buildah run $ctr -- yum install -y centos-release-scl
 buildah run $ctr -- yum-config-manager --enable rhel-server-rhscl-7-rpms
