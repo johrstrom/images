@@ -6,7 +6,7 @@ dev_packages=(lsof sudo sqlite-devel gcc zlib-devel git make wget)
 dev_packages+=(rpm-build gcc-c++ libseccomp vim-enhanced openssl-devel)
 dev_packages+=(curl curl-devel selinux-policy-devel strace passwd)
 dev_packages+=(podman buildah which findutils procps-ng nodejs)
-dev_pacakges+=(ShellCheck)
+dev_packages+=(ShellCheck)
 
 # setup the user first bc the group rvm get's created as 1000 if it doesn't exist
 #buildah run $ctr -- groupadd $USER
