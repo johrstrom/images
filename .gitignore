@@ -1,3 +1,5 @@
 
 src/apache-jmeter-*
 ood-server/Dockerfile
+.stigviewer.STIGViewer/
+STIGV_AppData/
